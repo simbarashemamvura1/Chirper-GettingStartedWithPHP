@@ -1,3 +1,131 @@
+# Chirper — Getting Started with PHP
+
+A Twitter-style micro-blogging app built with **Laravel**, created as a hands-on introduction to full-stack PHP development. This repo tracks the project from an empty folder to a working, styled, authenticated application — commit by commit.
+
+![Laravel](https://img.shields.io/badge/Laravel-11-FF2D20?logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.5-777BB4?logo=php&logoColor=white)
+![SQLite](https://img.shields.io/badge/Database-SQLite-003B57?logo=sqlite&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
+
+---
+
+## What is Chirper?
+
+Chirper is a small Twitter-style app: users register, log in, and post short messages ("chirps") to a public feed. It's the project used in Laravel's own official bootcamp tutorial, adapted here as a self-directed learning exercise.
+
+## Features
+
+- **Authentication** — register, login, logout, password hashing (via Laravel Breeze)
+- **Public feed, gated posting** — anyone can read the feed; only logged-in users can post, edit, or delete
+- **Chirp CRUD** — create, edit, and delete posts
+- **Ownership-based authorization** — enforced server-side via a Laravel Policy (confirmed with a real `403 Forbidden` when a user attempts to edit someone else's post, not just a hidden UI button)
+- **"Edited" indicator** — shows when a chirp has been modified since posting
+- **Relative timestamps** — "2 minutes ago" style, via Laravel's `diffForHumans()`
+- **Per-user avatar colors** — consistent color assigned to each user based on their ID
+- **Custom branding** — mascot logo, feather-icon buttons, brand color palette
+
+## Tech stack
+
+| Layer | Tool |
+|---|---|
+| Backend framework | Laravel 11 |
+| Language | PHP 8.5 |
+| Auth scaffolding | Laravel Breeze (Blade stack) |
+| Database | SQLite |
+| Frontend | Blade templates, Tailwind CSS |
+| Icons | Tabler Icons |
+| Build tool | Vite |
+
+## Database schema
+
+**users**
+```
+id
+name
+email
+password
+created_at
+updated_at
+```
+
+**chirps**
+```
+id
+user_id (foreign key → users.id, cascade delete)
+body
+created_at
+updated_at
+```
+
+## Project structure
+
+```
+app/
+  Http/Controllers/ChirpController.php   # CRUD logic
+  Models/Chirp.php                       # Chirp model + user relationship
+  Models/User.php                        # User model + chirps relationship
+  Policies/ChirpPolicy.php               # Authorization: users can only edit/delete their own chirps
+database/
+  migrations/                            # users + chirps table schema
+resources/
+  views/chirps/
+    index.blade.php                      # Public feed + post form
+    edit.blade.php                       # Edit form
+routes/
+  web.php                                # Public + auth-gated routes
+public/images/
+  logo.jpg                               # Brand mascot logo
+```
+
+## Setup
+
+**Requirements:** PHP 8.2+, Composer, Node 18+
+
+```bash
+git clone https://github.com/simbarashemamvura1/Chirper-GettingStartedWithPHP.git
+cd Chirper-GettingStartedWithPHP
+
+composer install
+npm install
+
+cp .env.example .env
+php artisan key:generate
+
+# database.sqlite is included; ensure DB_CONNECTION=sqlite in .env
+php artisan migrate
+
+npm run build
+php artisan serve
+```
+
+Visit `http://localhost:8000` in your browser.
+
+## What this project demonstrates
+
+Built as a portfolio piece alongside other projects (embedded systems, robotics), Chirper shows a different but complementary skill set:
+
+- Relational database design (foreign keys, cascading deletes)
+- Eloquent ORM relationships (`hasMany` / `belongsTo`)
+- Authentication and session management
+- Authorization via Policies (server-enforced, not just UI-hidden)
+- MVC structure and RESTful resource routing
+- Frontend styling with Tailwind and component-based Blade templates
+
+## Possible extensions
+
+Not implemented here, but natural next steps for extending the project:
+
+- Likes and comments
+- Search
+- Follow/unfollow
+- Image uploads on chirps
+- Pagination / infinite scroll
+- Admin moderation tools
+
+## Author
+
+Simbarashe Mamvura — built as a learning project to get hands-on with Laravel fundamentals.
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
